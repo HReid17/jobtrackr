@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}
+Add Application | JobTrackr
+{% endblock %}
+
+{% block content %}
+
+<h1>Add Application</h1>
+
+<form method="POST">
+
+    <input type="text" name="company" placeholder="Company">
+
+    <input type="text" name="role" placeholder="Role">
+
+    <input type="text" name="status" placeholder="Status">
+
+    <input type="date" name="applied_date">
+
+    <button type="submit">
+        Save Application
+    </button>
+
+</form>
+
+{% endblock %}

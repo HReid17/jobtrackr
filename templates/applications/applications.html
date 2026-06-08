@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}
+Applications | JobTrackr
+{% endblock %}
+
+{% block content %}
+
+<h1>Applications</h1>
+
+<a href="{{ url_for('add_application') }}">Add Application</a>
+
+{% for application in applications %}
+<div>
+    <h2>{{ application.company }}</h2>
+    <p>{{ application.role }}</p>
+    <p>{{ application.status }}</p>
+    <p>{{ application.applied_date }}</p>
+</div>
+{% else %}
+<p>No applications added yet.</p>
+{% endfor %}
+
+{% endblock %}
