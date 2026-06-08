@@ -11,6 +11,12 @@
 
 <body>
 
+    <nav>
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('applications') }}">Applications</a>
+        <a href="{{ url_for('analytics') }}">Analytics</a>
+    </nav>
+
     {% block content %}
     {% endblock %}
 
