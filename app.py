@@ -47,6 +47,39 @@ def add_application():
     return render_template("applications/add_application.html")
 
 
+@app.route("/applications/delete/<int:id>", methods=["POST"])
+def delete_application(id):
+
+    application = Application.query.get_or_404(id)
+
+    db.session.delete(application)
+    db.session.commit()
+
+    return redirect(url_for("applications"))
+
+
+@app.route("/applications/edit/<int:id>", methods=["GET", "POST"])
+def edit_application(id):
+
+    application = Application.query.get_or_404(id)
+
+    if request.method == "POST":
+        application.company = request.form.get("company")
+        application.role = request.form.get("role")
+        application.status = request.form.get("status")
+
+        applied_date = request.form.get("applied_date")
+        application.applied_date = datetime.strptime(applied_date, "%Y-%m-%d").date()
+
+        db.session.commit()
+
+        return redirect(url_for("applications"))
+
+    return render_template(
+        "applications/edit_application.html", application=application
+    )
+
+
 # Analytics
 @app.route("/analytics")
 def analytics():
