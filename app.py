@@ -26,17 +26,33 @@ def applications():
 
 @app.route("/applications/add", methods=["GET", "POST"])
 def add_application():
+
     if request.method == "POST":
         company = request.form.get("company")
         role = request.form.get("role")
         status = request.form.get("status")
         applied_date = request.form.get("applied_date")
+        location = request.form.get("location")
+        source = request.form.get("source")
+        interview_date = request.form.get("interview_date")
+        interview_time = request.form.get("interview_time")
+        notes = request.form.get("notes")
+
+        if interview_date:
+            interview_date = datetime.strptime(interview_date, "%Y-%m-%d").date()
+        else:
+            interview_date = None
 
         new_application = Application(
             company=company,
             role=role,
             status=status,
             applied_date=datetime.strptime(applied_date, "%Y-%m-%d").date(),
+            location=location,
+            source=source,
+            interview_date=interview_date,
+            interview_time=interview_time,
+            notes=notes,
         )
 
         db.session.add(new_application)
@@ -68,8 +84,26 @@ def edit_application(id):
         application.role = request.form.get("role")
         application.status = request.form.get("status")
 
-        applied_date = request.form.get("applied_date")
-        application.applied_date = datetime.strptime(applied_date, "%Y-%m-%d").date()
+        application.applied_date = datetime.strptime(
+            request.form.get("applied_date"),
+            "%Y-%m-%d"
+        ).date()
+
+        application.location = request.form.get("location")
+        application.source = request.form.get("source")
+
+        interview_date = request.form.get("interview_date")
+
+        if interview_date:
+            application.interview_date = datetime.strptime(
+            interview_date,
+            "%Y-%m-%d"
+        ).date()
+        else:
+            application.interview_date = None
+
+            application.interview_time = request.form.get("interview_time")
+            application.notes = request.form.get("notes")
 
         db.session.commit()
 
@@ -88,10 +122,6 @@ def analytics():
 
 with app.app_context():
     db.create_all()
-
-    print(
-        Application.query.all()
-    )  # Quick Test - Expecting [] to show as empty database
 
 if __name__ == "__main__":
     app.run(debug=True)

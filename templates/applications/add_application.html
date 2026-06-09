@@ -14,9 +14,25 @@ Add Application | JobTrackr
 
     <input type="text" name="role" placeholder="Role">
 
-    <input type="text" name="status" placeholder="Status">
+    <select name="status">
+        <option value="Applied">Applied</option>
+        <option value="Interview">Interview</option>
+        <option value="Offer">Offer</option>
+        <option value="Rejected">Rejected</option>
+    </select>
 
     <input type="date" name="applied_date">
+
+    <input type="text" name="location" placeholder="Location">
+
+    <input type="text" name="source" placeholder="Source">
+
+    <input type="date" name="interview_date">
+
+    <input type="text" name="interview_time" placeholder="Interview Time">
+
+    <textarea name="notes" placeholder="Notes">
+    </textarea>
 
     <button type="submit">
         Save Application
