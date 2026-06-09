@@ -8,6 +8,40 @@ Applications | JobTrackr
 
 <h1>Applications</h1>
 
+<form method="GET">
+
+    <input type="text" name="search" value="{{ request.args.get('search', '') }}" placeholder="Search applications...">
+
+    <select name="status">
+
+        <option value="" {% if not request.args.get('status') %}selected{% endif %}>
+            All Statuses
+        </option>
+
+        <option value="Applied" {% if request.args.get('status')=='Applied' %}selected{% endif %}>
+            Applied
+        </option>
+
+        <option value="Interview" {% if request.args.get('status')=='Interview' %}selected{% endif %}>
+            Interview
+        </option>
+
+        <option value="Offer" {% if request.args.get('status')=='Offer' %}selected{% endif %}>
+            Offer
+        </option>
+
+        <option value="Rejected" {% if request.args.get('status')=='Rejected' %}selected{% endif %}>
+            Rejected
+        </option>
+
+    </select>
+
+    <button type="submit">
+        Apply
+    </button>
+
+</form>
+
 <a href="{{ url_for('add_application') }}">Add Application</a>
 
 {% for application in applications %}

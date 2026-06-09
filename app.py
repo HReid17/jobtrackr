@@ -20,7 +20,20 @@ def dashboard():
 # Applications
 @app.route("/applications")
 def applications():
-    applications = Application.query.order_by(Application.applied_date.desc()).all()
+
+    search = request.args.get("search")
+    status = request.args.get("status")
+
+    query = Application.query
+
+    if search:
+        query = query.filter(Application.company.contains(search))
+
+    if status:
+        query = query.filter(Application.status == status)
+
+    applications = query.all()
+
     return render_template("applications/applications.html", applications=applications)
 
 
@@ -85,8 +98,7 @@ def edit_application(id):
         application.status = request.form.get("status")
 
         application.applied_date = datetime.strptime(
-            request.form.get("applied_date"),
-            "%Y-%m-%d"
+            request.form.get("applied_date"), "%Y-%m-%d"
         ).date()
 
         application.location = request.form.get("location")
@@ -96,9 +108,8 @@ def edit_application(id):
 
         if interview_date:
             application.interview_date = datetime.strptime(
-            interview_date,
-            "%Y-%m-%d"
-        ).date()
+                interview_date, "%Y-%m-%d"
+            ).date()
         else:
             application.interview_date = None
 
