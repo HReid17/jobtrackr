@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
-from datetime import datetime
+from datetime import datetime, date
 from extensions import db
 from models import Application
 
@@ -14,7 +14,37 @@ db.init_app(app)
 # Dashboard
 @app.route("/")
 def dashboard():
-    return render_template("dashboard/dashboard.html")
+
+    # Stats
+    total_applications = Application.query.count()
+    applied = Application.query.filter_by(status="Applied").count()
+    interviews = Application.query.filter_by(status="Interview").count()
+    offers = Application.query.filter_by(status="Offer").count()
+    rejected = Application.query.filter_by(status="Rejected").count()
+
+    # Recent Applications
+    recent_applications = (
+        Application.query.order_by(Application.applied_date.desc()).limit(5).all()
+    )
+
+    # Upcoming Interview's
+    upcoming_interviews = (
+        Application.query.filter(Application.interview_date >= date.today())
+        .order_by(Application.interview_date.asc())
+        .limit(3)
+        .all()
+    )
+
+    return render_template(
+        "dashboard/dashboard.html",
+        total_applications=total_applications,
+        applied=applied,
+        interviews=interviews,
+        offers=offers,
+        rejected=rejected,
+        recent_applications=recent_applications,
+        upcoming_interviews=upcoming_interviews,
+    )
 
 
 # Applications

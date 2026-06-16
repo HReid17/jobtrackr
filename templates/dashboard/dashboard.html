@@ -5,5 +5,94 @@ Dashboard
 {% endblock %}
 
 {% block content %}
-<h1>Welcome to JobTrackr</h1>
+
+<section class="dashboard-header">
+    <h1>Welcome back Harrison</h1>
+    <p>You have {{ interviews }} active interviews.</p>
+</section>
+
+<section class="stats-grid">
+
+    <div class="stat-card">
+        <h3>Total Applications</h3>
+        <p>{{ total_applications }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>Interviews</h3>
+        <p>{{ interviews }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>Offers</h3>
+        <p>{{ offers }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>Rejected</h3>
+        <p>{{ rejected }}</p>
+    </div>
+
+</section>
+
+<section class="dashboard-content">
+
+    <section class="recent-applications">
+
+        <h2>Recent Applications</h2>
+
+        {% for application in recent_applications %}
+
+        <div class="application-card">
+
+            <h3>{{ application.company }}</h3>
+
+            <p>{{ application.role }}</p>
+
+            <p>{{ application.status }}</p>
+
+            <p>
+                {{ application.applied_date.strftime('%d %b %Y') }}
+            </p>
+
+        </div>
+
+        {% else %}
+
+        <p>No applications found.</p>
+
+        {% endfor %}
+
+    </section>
+
+    <section class="upcoming-interviews">
+
+        <h2>Upcoming Interviews</h2>
+
+        {% for interview in upcoming_interviews %}
+
+        <div class="interview-card">
+
+            <p>{{ interview.interview_date.strftime('%d %b') }}</p>
+
+            <h3>{{ interview.company }}</h3>
+
+            <p>{{ interview.role }}</p>
+
+            <p>
+                {{ interview.interview_time or "Time TBC" }}
+            </p>
+
+        </div>
+
+        {% else %}
+
+        <p>No upcoming interviews yet.</p>
+
+        {% endfor %}
+
+    </section>
+
+</section>
+
 {% endblock %}
