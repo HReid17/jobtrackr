@@ -158,7 +158,51 @@ def edit_application(id):
 # Analytics
 @app.route("/analytics")
 def analytics():
-    return render_template("analytics/analytics.html")
+
+    total_applications = Application.query.count()
+    applied = Application.query.filter_by(status="Applied").count()
+    interviews = Application.query.filter_by(status="Interview").count()
+    offers = Application.query.filter_by(status="Offer").count()
+    rejected = Application.query.filter_by(status="Rejected").count()
+
+    # Interview Rate
+    if total_applications > 0:
+        interview_rate = round((interviews / total_applications) * 100)
+    else:
+        interview_rate = 0
+
+
+    # Source Breakdown
+    all_applications = Application.query.all()
+
+    source_breakdown = {}
+
+    for application in all_applications:
+        source = application.source
+
+        if source:
+            source_breakdown[source] = source_breakdown.get(source, 0) + 1
+
+
+    # Activity Overview
+    monthly_activity = {}
+    
+    for application in all_applications:
+        month = application.applied_date.strftime("%b")
+
+    monthly_activity[month] = monthly_activity.get(month, 0) + 1
+
+    return render_template(
+        "analytics/analytics.html",
+        total_applications=total_applications,
+        applied=applied,
+        interviews=interviews,
+        offers=offers,
+        rejected=rejected,
+        interview_rate=interview_rate,
+        source_breakdown=source_breakdown,
+        monthly_activity=monthly_activity
+    )
 
 
 with app.app_context():

@@ -4,4 +4,40 @@
 
 {% block content %}
 <h1>Analytics</h1>
+
+<section>
+    <h2>Application Funnel</h2>
+
+    <p>Applied: {{ applied }}</p>
+    <p>Interviews: {{ interviews }}</p>
+    <p>Offers: {{ offers }}</p>
+    <p>Rejected: {{ rejected }}</p>
+</section>
+
+<section>
+    <h2>Interview Success Rate</h2>
+
+    <p>{{ interview_rate }}%</p>
+</section>
+
+<section>
+    <h2>Source Breakdown</h2>
+
+    {% for source, count in source_breakdown.items() %}
+
+    <p>{{ source }}: {{ count }}</p>
+
+    {% endfor %}
+</section>
+
+<section>
+    <h2>Activity Overview</h2>
+
+    {% for month, count in monthly_activity.items() %}
+    <p>{{ month }}: {{ count }} applications</p>
+    {% else %}
+    <p>No activity yet.</p>
+    {% endfor %}
+</section>
+
 {% endblock %}
